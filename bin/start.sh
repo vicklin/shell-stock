@@ -56,7 +56,11 @@ printStock()
 		cur=substr(arr[4],0,8)
 		top=substr(arr[5],0,8)
 		bottom=substr(arr[6],0,8)
-		gap=substr((cur-old)/old*100,0,8)
+		if(old=="old"){
+			gap="%"
+		} else {
+			gap=substr((cur-old)/old*100,0,8)
+		}
 	}
 	printf("%s\t",name)
 	printf("\033[36m%s\033[0m\t",open)
