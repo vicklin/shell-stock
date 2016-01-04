@@ -43,7 +43,7 @@ printStock()
  cat $result | awk '{
 	len=split(substr($result,index($result,"=")+2,100),arr,",");
 		name=substr(arr[1],0,16)
-		open=substr(arr[2],0,8)
+		open=substr(arr[2],0,7)
 	if(open=="0.00"){ #check if is suspended
 		open="---"
 		old="---"
@@ -52,14 +52,14 @@ printStock()
 		bottom="---"
 		gap="---"
 	} else {
-		old=substr(arr[3],0,8)
-		cur=substr(arr[4],0,8)
-		top=substr(arr[5],0,8)
-		bottom=substr(arr[6],0,8)
+		old=substr(arr[3],0,7)
+		cur=substr(arr[4],0,7)
+		top=substr(arr[5],0,7)
+		bottom=substr(arr[6],0,7)
 		if(old=="old"){
 			gap="%"
 		} else {
-			gap=substr((cur-old)/old*100,0,8)
+			gap=substr((cur-old)/old*100,0,7)
 		}
 	}
 	printf("%s\t",name)
