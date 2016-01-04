@@ -83,7 +83,7 @@ printStock()
 # main entrance, execute every 5s
 main()
 {
-  while ((true))
+  while (true)
   do
    readStock
    printStock
