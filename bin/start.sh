@@ -41,9 +41,10 @@ readStock()
 printStock()
 {
  clear
- for r in $result
- do
-  echo $r | awk '{
+ if [ -z $short_scret ]; then
+  for r in $result
+  do
+   echo $r | awk '{
 	len=split(substr($r,index($r,"=")+2,100),arr,",");
 		name=substr(arr[1],0,16)
 		open=substr(arr[2],0,7)
@@ -65,21 +66,17 @@ printStock()
 			gap=substr((cur-old)/old*100,0,7)
 		}
 	}
-   if($short_scret==""){
 	printf("%s\t",name)
 	printf("\033[36m%s\033[0m\t",open)
 	printf("%s\t",old)
-   }
 
 	if (gap>0) {
 		printf("\033[31m%s\033[0m\t",cur)
 	} else {
 		printf("\033[32m%s\033[0m\t",cur)
 	}
-   if($short_scret==""){
 	printf("\033[33m%s\033[0m\t",top)
 	printf("%s\t",bottom)
-   }
 
 	if (gap>0) {
 		printf("\033[31m%s\033[0m\t",gap)
@@ -88,8 +85,39 @@ printStock()
 	}
 
 	print"\n"
-  }'
- done
+   }'
+  done
+ else
+  for r in $result
+  do
+   echo $r | awk '{
+	len=split(substr($r,index($r,"=")+2,100),arr,",");
+		open=substr(arr[2],0,7)
+	if(open=="0.00"){ #check if is suspended
+		cur="---"
+		gap="---"
+	} else {
+		old=substr(arr[3],0,7)
+		cur=substr(arr[4],0,7)
+		gap=substr((cur-old)/old*100,0,7)
+	}
+
+	if (gap>0) {
+		printf("\033[31m%s\033[0m\t",cur)
+	} else {
+		printf("\033[32m%s\033[0m\t",cur)
+	}
+
+	if (gap>0) {
+		printf("\033[31m%s\033[0m\t",gap)
+	} else {
+		printf("\033[32m%s\033[0m\t",gap)
+	}
+
+	print"\n"
+   }'
+  done
+ fi
 }
 
 # main entrance, execute every 5s
