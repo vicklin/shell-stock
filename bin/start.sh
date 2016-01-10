@@ -8,13 +8,8 @@
 # 1. put stock code in the file called "codes", eg. sh000001
 # 2. execute the script "start.sh"(remember to use chmod +x to authorize)
 
-#Notice:
-# 1. this app shows result in terminal, refresh every 3s by clean up terminal so that the history of terminal log will easily full filled. I will fix this bug soon.
-
 sinaurl="http://hq.sinajs.cn/list=" 
 context=$(dirname $0)
-result=$context"/.result"
-log=$context"/.log"
 codes=$context"/codes"
 refreshGap=3s
 
@@ -23,13 +18,13 @@ refreshGap=3s
 getStock()
 {
  target=${sinaurl}""$1
- curl ${target} 2>$log |iconv -f gb2312 -t utf-8 >> $result
+ result=$result$'\n'`curl ${target} 2>/dev/null | iconv -f gb2312 -t utf-8 | sed "s/var //"`
 }
 
 # for each code in $codes, -> getStock
 readStock()
 {
- echo  'var title="---name----,open,old,cur,top,bottom,\%"'> $result
+ result=`echo 'title="---name----,open,old,cur,top,bottom,\%"'`
  while read myline
  do
   getStock $myline
@@ -40,8 +35,10 @@ readStock()
 printStock()
 {
  clear
- cat $result | awk '{
-	len=split(substr($result,index($result,"=")+2,100),arr,",");
+ for r in $result
+ do
+  echo $r | awk '{
+	len=split(substr($r,index($r,"=")+2,100),arr,",");
 		name=substr(arr[1],0,16)
 		open=substr(arr[2],0,7)
 	if(open=="0.00"){ #check if is suspended
@@ -81,7 +78,8 @@ printStock()
 	}
 
 	print"\n"
- }'
+  }'
+ done
 }
 
 # main entrance, execute every 5s
