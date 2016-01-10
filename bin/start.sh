@@ -7,9 +7,11 @@
 #Usage:
 # 1. put stock code in the file called "codes", eg. sh000001
 # 2. execute the script "start.sh"(remember to use chmod +x to authorize)
+# 3. if you just want to display short info like cur and % for scret, just execute "start.sh AnyWord"
 
 sinaurl="http://hq.sinajs.cn/list=" 
 context=$(dirname $0)
+short_scret=$1
 codes=$context"/codes"
 refreshGap=3s
 
@@ -24,7 +26,11 @@ getStock()
 # for each code in $codes, -> getStock
 readStock()
 {
- result=`echo 'title="---name----,open,old,cur,top,bottom,\%"'`
+ if [ -z $short_scret ]; then
+  result=`echo 'title="---name----,open,old,cur,top,bottom,\%"'`
+ else
+  result=
+ fi
  while read myline
  do
   getStock $myline
@@ -59,17 +65,21 @@ printStock()
 			gap=substr((cur-old)/old*100,0,7)
 		}
 	}
+   if($short_scret==""){
 	printf("%s\t",name)
 	printf("\033[36m%s\033[0m\t",open)
 	printf("%s\t",old)
+   }
 
 	if (gap>0) {
 		printf("\033[31m%s\033[0m\t",cur)
 	} else {
 		printf("\033[32m%s\033[0m\t",cur)
 	}
+   if($short_scret==""){
 	printf("\033[33m%s\033[0m\t",top)
 	printf("%s\t",bottom)
+   }
 
 	if (gap>0) {
 		printf("\033[31m%s\033[0m\t",gap)
