@@ -20,7 +20,7 @@ refreshGap=3s
 getStock()
 {
  target=${sinaurl}""$1
- result=$result$'\n'`curl ${target} 2>/dev/null | iconv -f gb2312 -t utf-8 | sed "s/var //"`
+ result=$result$'\n'`curl ${target} 2>/dev/null | iconv -f gb2312 -t utf-8 | sed "s/var //" | sed "s/ /_/g"`
 }
 
 # for each code in $codes, -> getStock
