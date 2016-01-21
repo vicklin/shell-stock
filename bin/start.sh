@@ -78,9 +78,9 @@ printStock()
 	printf("\033[33m%s\033[0m\t",top)
 	printf("%s\t",bottom)
 
-	if (gap>0) {
+	if (gap>=0) {
 		printf("\033[31m%s\033[0m\t",gap)
-	} else {
+	} else if(gap!="-nan"){
 		printf("\033[32m%s\033[0m\t",gap)
 	}
 
@@ -108,9 +108,9 @@ printStock()
 		printf("\033[32m%s\033[0m\t",cur)
 	}
 
-	if (gap>0) {
+	if (gap>=0) {
 		printf("\033[31m%s\033[0m\t",gap)
-	} else {
+	} else if(gap!="-nan"){
 		printf("\033[32m%s\033[0m\t",gap)
 	}
 
