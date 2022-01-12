@@ -45,7 +45,7 @@ printStock()
   for r in $result
   do
    echo $r | awk '{
-	len=split(substr($r,index($r,"=")+2,100),arr,",");
+	len=split(substr($0,index($0,"=")+2,100),arr,",");
 		name=substr(arr[1],0,16)
 		open=substr(arr[2],0,7)
 	if(open=="0.00"){ #check if is suspended
